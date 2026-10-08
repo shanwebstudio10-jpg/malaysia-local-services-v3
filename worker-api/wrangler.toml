@@ -1,0 +1,8 @@
+name="malaysia-local-services-api-v3"
+main="src/index.js"
+compatibility_date="2026-10-08"
+
+[[d1_databases]]
+binding="DB"
+database_name="malaysia-local-services-db"
+database_id="REPLACE_WITH_YOUR_D1_DATABASE_ID"

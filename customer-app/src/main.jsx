@@ -1,0 +1,18 @@
+import React,{useState} from "react";
+import{createRoot}from"react-dom/client";
+import"./style.css";
+
+const services=["Electrician","Plumbing","Painting","Aircond Service","Renovation","Handyman","Waterproofing","Other Works"];
+function App(){
+ const [service,setService]=useState(""); const [done,setDone]=useState(false);
+ const [form,setForm]=useState({name:"",phone:"",location:"",postcode:"",date:"",time:"",description:""});
+ const set=k=>e=>setForm({...form,[k]:e.target.value});
+ const submit=e=>{e.preventDefault();if(!form.name||!form.phone||!service||!form.location||!form.description)return alert("Please complete required fields.");localStorage.setItem("lastRequest",JSON.stringify({...form,service,status:"New",createdAt:new Date().toISOString()}));setDone(true)};
+ const wa=()=>window.open("https://wa.me/60123456789?text="+encodeURIComponent("Hi, I need a Malaysia local service. My requirement is: "+form.description)," _blank");
+ return <><header><b>MY Local Services</b><nav><a href="#services">Services</a><a href="#request">Request Service</a><a onClick={wa}>WhatsApp</a></nav></header>
+ <section className="hero"><div><small>MALAYSIA LOCAL SERVICE REQUEST</small><h1>Need an electrician, plumber or other local service?</h1><p>Send your requirement online. Our team can contact you and arrange a suitable worker.</p><button onClick={()=>document.getElementById("request").scrollIntoView()}>Request a Service</button><button className="wa" onClick={wa}>WhatsApp</button></div><div className="heroBox">⚡ 🔧 🎨<h2>One place for local work</h2><p>Electrician · Plumbing · Painting · Aircond · Renovation · Handyman</p></div></section>
+ <section id="services"><h2>Services</h2><div className="grid">{services.map(s=><button className="card" onClick={()=>{setService(s);document.getElementById("request").scrollIntoView()}} key={s}><strong>{s}</strong><span>Request →</span></button>)}</div></section>
+ <section id="request"><h2>Send your requirement</h2>{done?<div className="success"><h2>✓ Request received</h2><p>Thank you. Our team can contact you shortly.</p><button className="wa" onClick={wa}>Continue on WhatsApp</button><button onClick={()=>setDone(false)}>New Request</button></div>:<form onSubmit={submit}><div className="formgrid"><label>Name *<input value={form.name} onChange={set("name")}/></label><label>WhatsApp / Mobile *<input value={form.phone} onChange={set("phone")} placeholder="+60"/></label><label>Service *<select value={service} onChange={e=>setService(e.target.value)}><option value="">Select</option>{services.map(s=><option key={s}>{s}</option>)}</select></label><label>Area / Location *<input value={form.location} onChange={set("location")} placeholder="e.g. Shah Alam"/></label><label>Postcode<input value={form.postcode} onChange={set("postcode")}/></label><label>Preferred Date<input type="date" value={form.date} onChange={set("date")}/></label><label>Preferred Time<select value={form.time} onChange={set("time")}><option>Any time</option><option>Morning</option><option>Afternoon</option><option>Evening</option></select></label></div><label>Requirement *<textarea value={form.description} onChange={set("description")} placeholder="Describe the problem or work required"></textarea></label><label>Photo (V3 ready)<input type="file" accept="image/*" /></label><button type="submit">Submit Requirement</button></form>}</section>
+ <footer>© 2026 MY Local Services · Malaysia</footer></>
+}
+createRoot(document.getElementById("root")).render(<App/>);
